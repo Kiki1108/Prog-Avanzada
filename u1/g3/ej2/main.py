@@ -46,9 +46,12 @@ def main():
                 except:
                     print("\nAcción no válida\n")
                     continue
-                print("\nEscriba el efecto secundario")
-                efecto_secundario = input()
-                vacunas[eleccion-1].add_efectos_secundarios(efecto_secundario)
+                if eleccion > len(vacunas):
+                    print("Vacuna no válida")
+                else:
+                    print("\nEscriba el efecto secundario")
+                    efecto_secundario = input()
+                    vacunas[eleccion-1].add_efectos_secundarios(efecto_secundario)
             case 3:
                 ver_vacunas(vacunas)
             case 4:
@@ -62,11 +65,15 @@ def main():
                 except:
                     print("\nAcción no válida\n")
                     continue
-                vacunas[eleccion-1].get_efectos_secundarios()
+                if eleccion > len(vacunas):
+                    print("Vacuna no válida")
+                else:
+                    vacunas[eleccion-1].get_efectos_secundarios()
 
    
 def ver_vacunas(vacunas):
     contador = 1
+    print("\nVacunas:")
     for a in range(len(vacunas)):
         print(f"({contador}) {vacunas[a].get_nombre()}, laboratorio: {vacunas[a].get_lab()} ")
         contador = contador + 1
