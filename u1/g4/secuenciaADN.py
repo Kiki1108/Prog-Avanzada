@@ -51,7 +51,6 @@ class SecuanciaADN():
         while cadena.find(patron) != -1 :
             lista.append(cadena.find(patron) + 1)
             cadena = cadena.replace(patron, patron.lower(), 1)
-        print(cadena)
         return lista
 
 
