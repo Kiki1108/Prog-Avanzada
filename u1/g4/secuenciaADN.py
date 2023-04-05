@@ -1,4 +1,4 @@
-class SecuanciaADN():
+class SecuenciaADN():
     def __init__(self) -> None:
         self.__secuencia = None
 
@@ -13,37 +13,34 @@ class SecuanciaADN():
 
     def get_secuencia(self):
         return self.__secuencia
-    
+
 
     def get_longitud(self):
         return len(self.__secuencia)
-    
+
 
     def get_inverso(self):
         inverso = ""
-        for a in self.__secuencia:
-            match a:
+        for nucleotido in self.__secuencia:
+            match nucleotido:
                 case "A": inverso = "T" + inverso
                 case "T": inverso = "A" + inverso
                 case "C": inverso = "G" + inverso
                 case "G": inverso = "C" + inverso
         return inverso
-    
+
 
     def contar_nucleotidos(self):
-        a = 0
-        t = 0
-        c = 0
-        g = 0
+        contador = [0, 0, 0, 0]
         for i in self.__secuencia:
             match i:
-                case "A": a += 1
-                case "T": t += 1
-                case "C": c += 1
-                case "G": g += 1
-        dic = {"A": a, "T": t, "C": c, "G": g}
+                case "A": contador[0] += 1
+                case "T": contador[1] += 1
+                case "C": contador[2] += 1
+                case "G": contador[3] += 1
+        dic = {"A": contador[0], "T": contador[1], "C": contador[2], "G": contador[3]}
         return dic
-    
+
 
     def encontrar_patron(self, patron):
         cadena = self.__secuencia
@@ -56,11 +53,6 @@ class SecuanciaADN():
 
     def calcular_peso_molecular(self):
         dic = self.contar_nucleotidos()
-        a = dic.get("A")
-        t = dic.get("T")
-        c = dic.get("C")
-        g = dic.get("G")
-        peso = a * 313.21 + t * 304.2 + c * 289.18 + g * 329.21
+        peso = dic.get("A") *313.21 +dic.get("T") *304.2 +dic.get("C") *289.18 +dic.get("G") *329.21
         return peso
-        
 

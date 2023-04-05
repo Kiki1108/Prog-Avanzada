@@ -4,40 +4,38 @@ def main():
     lista, patron = menu()
     secuenciador = crear_secuencias(lista)
     imprimir_datos(secuenciador, patron)
-    
-    
+
+
 def menu():
-    a = True
-    while a:
+    while True:
         print("¿Cuantas veces va a secuenciar?")
         veces = input("")
         try:
             veces = int(veces)
-            a = False
+            break
         except:
             print("Número no válido")
 
     lista = []
     for i in range(veces):
-        b = True
-        while b:
+        while True:
             print(f"Escriba la cantidad aproximada de nucleotidos de la secuencia {i + 1}")
             cantidad = input("")
             try:
                 cantidad = int(cantidad)
-                b = False
+                break
             except:
                 print("Número no válido")
         lista.append(cantidad)
 
-    c = True
-    while c:
+    condicion = True
+    while condicion:
         print("Introduzca el patrón a buscar")
         patron = input("").upper()
-        c = False
+        condicion = False
         for i in patron:
             if i not in ["A", "C", "T", "G"]:
-                c = True
+                condicion = True
                 break
 
     return lista, patron
@@ -69,11 +67,12 @@ def imprimir_datos(secuenciador, patron):
 
 
 def crear_secuencias(longitud):
-    a = Sd()
+    secuenciador = Sd()
     for i in longitud:
-        a.set_longitud(i)
-        a.generar_cadena()
-    return a
+        print(i)
+        secuenciador.set_longitud(i)
+        secuenciador.generar_cadena()
+    return secuenciador
 
 if __name__ == "__main__":
     main()
