@@ -15,12 +15,9 @@ class AnalizadorProteico():
             for j in i.get_secuencia():
                 if j in ["A", "V", "I", "L", "F", "M"]:
                     contador += 1
-            
+
             print(i.get_nombre())
             print(f"% de aminoácidos hidrofobico: {int((contador/tamano)*100)}%")
 
     def mostrar_peso_molecular(self):
         pass
-
-
-

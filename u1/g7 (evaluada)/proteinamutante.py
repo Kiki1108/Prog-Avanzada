@@ -9,14 +9,14 @@ class ProteinaMutante(Proteina):
 
     def set_mutacion(self, secuencia):
         for i in secuencia:
-            if i.upper() not in dic.keys():
+            if i.upper() not in dic:
                 print("Secuencia no válida")
                 break
         self.__mutacion = secuencia.upper()
 
     def get_mutacion(self):
         return self.__mutacion
-    
+
     def mostrar_mutacion(self):
         print(f"Nombre: {self.get_nombre()}")
         print("Mutación:")
@@ -43,5 +43,3 @@ class ProteinaMutante(Proteina):
         print(self.__rango[0])
         print(self.__mutacion)
         print(self.__rango[1], "\n")
-
-    

@@ -1,12 +1,12 @@
-from aminoacidos import dic
-from proteina import Proteina
-from proteinaestructural import ProteinaEstructural as Pes
-from proteinaezimatica import ProteinaEnzimatica as Pen
-from secuenciaproteina import SecuenciaProteina as Sp
-from proteinamutante import ProteinaMutante as Pm
-from analizadorproteico import AnalizadorProteico as Ap
-
 import random
+
+from aminoacidos import dic
+from proteina               import Proteina
+from proteinaestructural    import ProteinaEstructural  as Pes
+from proteinaenzimatica      import ProteinaEnzimatica   as Pen
+from secuenciaproteina      import SecuenciaProteina    as Sp
+from proteinamutante        import ProteinaMutante      as Pm
+from analizadorproteico     import AnalizadorProteico   as Ap
 
 def main():
     p1 = Proteina(nombre="Proteina1")
@@ -73,7 +73,7 @@ def hacer_secuencia(proteina):
         secuencia = secuencia + mutacion.upper()
         for j in range(tamano2):
             secuencia = secuencia + aminoacidos[random.randint(0,19)]
-        
+
         proteina.set_mutacion(mutacion)
         proteina.set_rango(tamano1, (tamano1 + tamano_mutacion))
 
@@ -87,9 +87,7 @@ def hacer_secuencia(proteina):
         for j in range(tamano):
             secuencia = secuencia + aminoacidos[random.randint(0,19)]
 
-
     return secuencia
-
 
 
 if __name__ == "__main__":

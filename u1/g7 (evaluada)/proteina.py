@@ -12,24 +12,24 @@ class Proteina():
 
     def get_nombre(self):
         return self.__nombre
-    
+
     def set_descripcion(self, descripcion):
         if isinstance(descripcion, str):
             self.__descripcion = descripcion
 
     def get_descripcion(self):
         return self.__descripcion
-    
+
     def set_secuencia(self, secuencia):
         for i in secuencia:
-            if i not in dic.keys():
+            if i not in dic:
                 print("Secuencia no válida")
                 break
         self.__secuencia = secuencia
 
     def get_secuencia(self):
         return self.__secuencia
-    
+
     def imprimir(self):
         print("#" * 50)
         print(f"\nNombre: {self.__nombre}")

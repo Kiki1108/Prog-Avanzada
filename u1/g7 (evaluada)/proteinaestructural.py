@@ -15,13 +15,13 @@ class ProteinaEstructural(Proteina):
 
     def get_tipo(self):
         return self.__tipo()
-    
+
     def imprimir(self):
         print("#" * 50)
         print(f"\nNombre: {self.get_nombre()}")
         print(f"Descripción: \n{self.get_descripcion()}\n")
         print(f"Secuencia: \n{self.get_secuencia()}\n")
         print(f"Tipo: {self.__tipo}\n")
-    
+
     def mostrar_tipo(self):
         print(f"Nombre: {self.get_nombre()}\nTipo: {self.__tipo}")
