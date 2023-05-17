@@ -12,6 +12,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.button.connect("clicked",self.on_quit_button_clicked)
 
         self.set_child(self.button)
+        self.set_default_size(1000,500)
+        #self.maximize()
 
     def on_quit_button_clicked(self,clicked_button):
         self.app_.quit()
