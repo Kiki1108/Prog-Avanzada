@@ -2,6 +2,7 @@ import sys
 import gi
 
 gi.require_version('Gtk', '4.0')
+
 from gi.repository import Gtk
 from ventana_exito import Exito
 
@@ -20,19 +21,19 @@ class MainWindow(Gtk.ApplicationWindow):
         self.label = Gtk.Label()
         self.label.set_text("Escriba")
         self.label.props.vexpand = True
-        self.label.props.hexpand = True 
+        self.label.props.hexpand = True
         self.box.append(self.label)
 
         # En la mitad de la box se pone una entrada de texto
         self.entrada_texto = Gtk.Entry()
         self.entrada_texto.props.hexpand = True
-        self.box.append(self.entrada_texto) 
+        self.box.append(self.entrada_texto)
 
         # Se crea un botón para guardar
         self.button = Gtk.Button(label="Guardar")
         self.button.props.vexpand = True
         self.button.props.hexpand = True
-        self.button.connect('clicked', self.save) 
+        self.button.connect('clicked', self.save)
         self.box.append(self.button)
 
         # Se crea la ventana que guarda
@@ -44,8 +45,8 @@ class MainWindow(Gtk.ApplicationWindow):
         texto = self.entrada_texto.get_text()
         print(texto)
         self._native.show()
-        
-    # Ventana de guardado    
+
+    # Ventana de guardado
     def dialogo_save(self):
         return Gtk.FileChooserNative(title="Save File",
                                      action=Gtk.FileChooserAction.SAVE,
@@ -53,7 +54,7 @@ class MainWindow(Gtk.ApplicationWindow):
                                      accept_label="_Save",
                                      cancel_label="_Cancel",
                                     )
-    
+
 
     # Evalua si se presionó aceptar en el guardado, para así guardar el archivo
     # Con lo escrito en la entrada de texto
