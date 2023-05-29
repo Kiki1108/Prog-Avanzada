@@ -7,6 +7,8 @@ gi.require_version('Gtk', '4.0')
 
 from gi.repository import Adw, Gio, GObject, Gtk
 
+# Ejemplo de Drop down
+
 class Widget(GObject.Object):
     __gtype_name__ = 'Widget'
 
@@ -153,6 +155,7 @@ class ExampleWindow(Gtk.ApplicationWindow):
         b = set(dir(Gtk.Widget))
         c = a - b
         for item in sorted(list(c)):
+            print(type(item))
             self.model_method.append(Method(name=item))
 
     def _on_selected_method(self, dropdown, data):
