@@ -3,6 +3,8 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk,Gio
 
+# Ejemplo desde donde se empieza
+
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):

@@ -3,6 +3,8 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk,Gio
 
+# Conversión del ejemplo con "combobox" a "drop down"
+
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
