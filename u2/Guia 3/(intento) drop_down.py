@@ -21,6 +21,8 @@ class DropDown(GObject.Object):
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.search_text_method = ''
+
         self.app_ = self.get_application()
 
         self.main_vertical_box = Gtk.Box.new( Gtk.Orientation.VERTICAL,10) #(orientation VERTICAL|HORIZONTAL  , spacing in pixels)
@@ -53,6 +55,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # Se crea el model 2
         self.dropdown2_model = Gio.ListStore(item_type=DropDown)
+        self.sort_model_method  = Gtk.SortListModel(model=self.dropdown2_model) # FIXME: Gtk.Sorter?
+        self.filter_model_method = Gtk.FilterListModel(model=self.sort_model_method)
+        self.filter_method = Gtk.CustomFilter.new(self._do_filter_method_view, self.filter_model_method)
+        self.filter_model_method.set_filter(self.filter_method)
+        
         for names in data_to_show:
             self.dropdown2_model.append(DropDown(name=names))       
 
@@ -70,8 +77,14 @@ class MainWindow(Gtk.ApplicationWindow):
         self.main_vertical_box.append(sumbit_button) 
 
         # Se crea el Dropdown 2
-        self.dropdown2 = Gtk.DropDown(model=self.dropdown2_model, factory=dropdown2_factory)
+        self.dropdown2 = Gtk.DropDown(model=self.filter_model_method, factory=dropdown2_factory)
+        self.dropdown2.set_enable_search(True)
+        self.dropdown2.connect("notify::selected-item", self._on_selected_widget, data_to_show)
         self.main_vertical_box.append(self.dropdown2)
+
+        # Se implementa el search
+        search_entry = self._get_search_entry()
+        search_entry.connect('search-changed', self._on_search_changed)
 
         # Se crea el botón del Dropdown 2
         print_button2 = Gtk.Button.new()
@@ -79,12 +92,28 @@ class MainWindow(Gtk.ApplicationWindow):
         print_button2.connect("clicked",self.on_print_button_clicked,self.dropdown2)
         self.main_vertical_box.append(print_button2)
 
+    def _get_search_entry(self):
+        popover = self.dropdown2.get_last_child()
+        box = popover.get_child()
+        box2 = box.get_first_child()
+        search_entry = box2.get_first_child()
+        return search_entry
+    
+    def _on_search_changed(self, search_entry):
+        self.search_text = search_entry.get_text()
+        self.filter_method.changed(Gtk.FilterChange.DIFFERENT)
+
+    def _do_filter_method_view(self, item, filter_list_model):
+        return self.search_text_method.upper() in item.name.upper()
 
     def _on_dropdown_factory_setup(self, factory, list_item):
         box = Gtk.Box(spacing=6, orientation=Gtk.Orientation.HORIZONTAL)
         label = Gtk.Label()
         box.append(label)
         list_item.set_child(box)
+
+    def _on_selected_widget(self, dropdown, data, data_to_show):
+        pass
 
     def _on_dropdown_factory_bind(self, factory, list_item):
         box = list_item.get_child()

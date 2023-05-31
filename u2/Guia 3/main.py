@@ -1,15 +1,13 @@
 import sys
 import gi
 
-gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
-from gi.repository import Adw, Gio, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
 # Conversión del ejemplo con "combobox" a "drop down"
 
 class DropDown(GObject.Object):
     __gtype_name__ = 'DropDown'
-
     def __init__(self, name):
         super().__init__()
         self._name = name
@@ -24,13 +22,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.app_ = self.get_application()
         self.set_default_size(300, 150)
 
-        data_to_show = ["Male",
-                        "Female",
-                        "uwu"]
+        data = ["Male",
+                "Female",
+                "uwu"]
 
         # Se crea el model
         self.dropdown_model = Gio.ListStore(item_type=DropDown)
-        for item in data_to_show:
+        for item in data:
             self.dropdown_model.append(DropDown(name=item))
 
         # Se crea el factory
