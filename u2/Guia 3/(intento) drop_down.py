@@ -8,7 +8,7 @@ from gi.repository import Adw, Gio, GObject, Gtk
 # Conversión del ejemplo con "combobox" a "drop down"
 
 class DropDown(GObject.Object):
-    __gtype_name__ = 'Primero'
+    __gtype_name__ = 'DropDown'
 
     def __init__(self, name):
         super().__init__()
@@ -26,14 +26,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.main_vertical_box = Gtk.Box.new( Gtk.Orientation.VERTICAL,10) #(orientation VERTICAL|HORIZONTAL  , spacing in pixels)
         self.set_child(self.main_vertical_box)
 
-        data_to_show = ["Male",
+        data_to_show = ["",
+                        "Male",
                         "Female",
                         "uwu"]
 
         # Se crea el model 1
         self.dropdown1_model = Gio.ListStore(item_type=DropDown)
-        for names in data_to_show:
-            self.dropdown1_model.append(DropDown(name=names))
+        for names in range(1,4):
+            self.dropdown1_model.append(DropDown(name=data_to_show[names]))
 
         # Se crea el factory 1
         dropdown1_factory = Gtk.SignalListItemFactory()
@@ -52,25 +53,24 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # Se crea el model 2
         self.dropdown2_model = Gio.ListStore(item_type=DropDown)
-        """
-        self.sort_model_widget  = Gtk.SortListModel(model=self.dropdown2_model) # FIXME: Gtk.Sorter?
-        self.filter_model_widget = Gtk.FilterListModel(model=self.sort_model_widget)
-        self.filter_widget = Gtk.CustomFilter.new(self._do_filter_method_view, self.filter_model_widget)
-        self.filter_model_widget.set_filter(self.filter_widget)
-        """
         for names in data_to_show:
-            self.dropdown2_model.append(DropDown(name=names))
+            self.dropdown2_model.append(DropDown(name=names))       
 
         # Se crea el factory 2
         dropdown2_factory = Gtk.SignalListItemFactory()
         dropdown2_factory.connect("setup", self._on_dropdown_factory_setup)
         dropdown2_factory.connect("bind", self._on_dropdown_factory_bind)
 
+        # Crear entry
+        self.entry = Gtk.Entry()
+        self.main_vertical_box.append(self.entry)
+        sumbit_button = Gtk.Button.new()
+        sumbit_button.props.label = "Sumbit"
+        sumbit_button.connect("clicked",self.on_sumbit_button_cliked,dropdown2_factory)
+        self.main_vertical_box.append(sumbit_button) 
+
         # Se crea el Dropdown 2
         self.dropdown2 = Gtk.DropDown(model=self.dropdown2_model, factory=dropdown2_factory)
-        #self.dropdown2 = Gtk.DropDown(model=self.filter_model_widget, factory=dropdown2_factory)
-        self.dropdown2.set_enable_search(True)
-        #self.dropdown2.connect("notify::selected-item", self._on_selected_widget)
         self.main_vertical_box.append(self.dropdown2)
 
         # Se crea el botón del Dropdown 2
@@ -95,12 +95,23 @@ class MainWindow(Gtk.ApplicationWindow):
     def on_print_button_clicked(self,p_button, dropdown):
         print(dropdown.get_selected_item()._name)
 
-    def _do_filter_method_view(self, item, filter_list_model):
-        return self.search_text_method.upper() in item.name.upper()
-    
-    def _on_selected_widget(self, dropdown, data_to_show):
-        for names in data_to_show:
-            self.dropdown2_model.append(DropDown(name=names))
+    def on_sumbit_button_cliked(self, button, factory):
+        entry = self.entry.get_text()
+        models = self.dropdown2.get_model()
+        lista = [entry]
+        # Forma de crear nuevas opciones
+        """
+        for i in models:
+            lista.append(i._name)
+        """
+        # Forma de reemplazar la opción
+        for i in range(1,4):
+            lista.append(models.get_item(i)._name)
+        
+        self.dropdown2_model.remove_all()
+
+        for item in lista:
+            self.dropdown2_model.append(DropDown(name=item))
 
 
 class MyApp(Gtk.Application):
@@ -115,5 +126,5 @@ class MyApp(Gtk.Application):
             self.win = MainWindow(application=self)
             self.win.present()
 
-app = MyApp(application_id="com.myapplicationexample",flags= Gio.ApplicationFlags.FLAGS_NONE)
+app = MyApp(application_id="com.drop_down",flags= Gio.ApplicationFlags.FLAGS_NONE)
 app.run(sys.argv)
