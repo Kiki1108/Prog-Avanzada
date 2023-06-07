@@ -1,13 +1,12 @@
 import sys
 import gi
 import pathlib
-from rdkit import Chem
+gi.require_version('Gtk', '4.0')
 from os import remove
+from gi.repository import Gio, GObject, Gtk, Gdk, GdkPixbuf, GLib
+from rdkit import Chem
 from rdkit.Chem import Draw
 
-gi.require_version('Gtk', '4.0')
-
-from gi.repository import Gio, GObject, Gtk, Gdk
 
 class Widget(GObject.Object):
     __gtype_name__ = 'Widget'
@@ -75,7 +74,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def add_data_to_model(self, list):
         for i in self.lista_dropdown:
             self.dropdown_model.append(Widget(name=i))
-        # Agrega 
+        # Agrega la lista al model del dropdown
 
 
     def dropdown_factory_setup(self, dropdown_factory, list_item):
@@ -90,6 +89,7 @@ class MainWindow(Gtk.ApplicationWindow):
         label = box.get_first_child()
         widget = list_item.get_item()
         label.set_text(widget.name)
+
 
     def clicked_menu_button(self, button):
         # Crear el about Dialog
@@ -127,9 +127,16 @@ class MainWindow(Gtk.ApplicationWindow):
         item_name = dropdown.get_selected_item()._name
         m = Chem.MolFromMolFile(f"{self.path_mol}/{item_name}.mol")
         img = Draw.MolToImage(m)
-        img.save("temp.png")
-        self.image.set_from_file("temp.png")
-        remove("temp.png")
+
+        # Forma de temporal:
+        #img.save("temp.png")
+        #self.image.set_from_file("temp.png")
+        #remove("temp.png")
+        
+        # Forma con Gdk pixbuf:
+        buffer = GLib.Bytes.new(img.tobytes())
+        gdata = GdkPixbuf.Pixbuf.new_from_bytes(buffer, GdkPixbuf.Colorspace.RGB, False, 8, img.width, img.height, len(img.getbands())*img.width)
+        self.image.set_from_pixbuf(gdata)
 
 
 class MyApp(Gtk.Application):
